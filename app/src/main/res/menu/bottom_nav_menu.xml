@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="@string/nav_home"
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home_black_24dp"/>
+
+    <item
+        android:title="@string/nav_donation"
+        android:id="@+id/nav_donation"
+        android:icon="@drawable/baseline_donation_24" />
+
+    <item
+        android:title="@string/nav_campaign"
+        android:id="@+id/nav_campaign"
+        android:icon="@drawable/campaign_black_24dp" />
+    <item
+        android:icon="@drawable/baseline_person_24"
+        android:title="@string/nav_account"
+        android:id="@+id/nav_account" />
+</menu>

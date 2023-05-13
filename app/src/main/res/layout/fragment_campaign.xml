@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.campaign.CampaignFragment">
+
+        <!-- TODO: Update blank fragment layout -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/frameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="1283dp"
+            tools:context=".BlankFragment">
+
+            <!-- TODO: Update blank fragment layout -->
+
+            <TextView
+                android:id="@+id/campaignTextLabel"
+                android:layout_width="312dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="100dp"
+                android:layout_marginEnd="65dp"
+                android:layout_marginBottom="662dp"
+                android:text="@string/campaign_title_required"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/shortDescLabel"
+                android:layout_width="312dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="65dp"
+                android:text="@string/short_description"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/campaignText" />
+
+            <TextView
+                android:id="@+id/category_label"
+                android:layout_width="312dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="65dp"
+                android:text="@string/campaign_category_required"
+                android:textSize="20sp"
+                android:labelFor="@+id/category_spinner"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="312dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="65dp"
+                android:text="@string/amount_of_required_funds_myr"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/category_spinner" />
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="312dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="65dp"
+                android:text="@string/campaign_feature_image_required"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textInputEditText2" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="312dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="65dp"
+                android:text="@string/campaign_end_date"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/shortDesc" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="250dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="15dp"
+                android:background="#D9D9D9"
+                android:textAlignment="center"
+                app:layout_constraintStart_toStartOf="@+id/textView8"
+                app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="268dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="15dp"
+                android:background="#D9D9D9"
+                app:layout_constraintStart_toStartOf="@+id/textView13"
+                app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+            <Button
+                android:id="@+id/datebtn"
+                android:layout_width="95dp"
+                android:layout_height="55dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="47dp"
+                android:text="@string/choose"
+                app:layout_constraintBottom_toBottomOf="@+id/textView7"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.25"
+                app:layout_constraintStart_toEndOf="@+id/textView7"
+                app:layout_constraintTop_toTopOf="@+id/textView7" />
+
+            <Button
+                android:id="@+id/upload_image"
+                android:layout_width="95dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="11dp"
+                android:layout_marginEnd="52dp"
+                android:text="@string/select"
+                app:layout_constraintBottom_toBottomOf="@+id/textView15"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView15"
+                app:layout_constraintTop_toTopOf="@+id/textView15" />
+
+            <EditText
+                android:id="@+id/campaignText"
+                android:layout_width="320dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="15dp"
+                android:ems="10"
+                android:hint="@string/campaign_title"
+                android:inputType="textPersonName"
+                app:layout_constraintStart_toStartOf="@+id/campaignTextLabel"
+                app:layout_constraintTop_toBottomOf="@+id/campaignTextLabel" />
+
+            <EditText
+                android:id="@+id/shortDesc"
+                android:layout_width="320dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="171dp"
+                android:layout_marginBottom="30dp"
+                android:ems="10"
+                android:hint="Short Description"
+                android:inputType="textPersonName"
+                app:layout_constraintBottom_toTopOf="@+id/textView8"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/shortDescLabel"
+                app:layout_constraintTop_toBottomOf="@+id/shortDescLabel" />
+
+            <Spinner
+                android:id="@+id/category_spinner"
+                android:layout_width="353dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="15dp"
+                app:layout_constraintStart_toStartOf="@+id/category_label"
+                app:layout_constraintTop_toBottomOf="@+id/category_label" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditText2"
+                android:layout_width="262dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="13dp"
+                android:layout_marginEnd="115dp"
+                android:layout_marginBottom="30dp"
+                android:hint="@string/enter_amount"
+                android:inputType="number"
+                app:layout_constraintBottom_toTopOf="@+id/textView13"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textView11"
+                app:layout_constraintTop_toBottomOf="@+id/textView11"
+                tools:layout_conversion_absoluteHeight="56dp"
+                tools:layout_conversion_absoluteWidth="325dp" />
+
+            <Button
+                android:id="@+id/nextpage"
+                android:layout_width="110dp"
+                android:layout_height="54dp"
+                android:layout_marginStart="163dp"
+                android:layout_marginTop="86dp"
+                android:layout_marginEnd="163dp"
+                android:text="@string/next"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+</ScrollView>

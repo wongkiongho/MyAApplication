@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">Mobileapplicationassignment</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="nav_donation">Donation</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_history">History</string>
+    <string name="nav_profile">Profile</string>
+    <string name="nav_campaign">Campaign</string>
+    <string name="textview">TextView</string>
+    <string name="settings">Settings</string>
+    <string name="donation_history">Donation History</string>
+    <string name="logoutbutton">Log out</string>
+
+    <string name="PName">Name</string>
+    <string name="Contact">Phone Number</string>
+    <string name="EmailAddress">Email Address</string>
+    <string name="Password">Password</string>
+    <string name="Save">save</string>
+    <string name="Reset">reset</string>
+    <string name="Changepassword">Change Password</string>
+    <string name="Currentpassword">Current password</string>
+    <string name="Newpassword">New password</string>
+    <string name="Confirmnewpassword">Confirm New Password</string>
+    <string name="Companyname">My Aid</string>
+    <string name="intro">Welcome back,</string>
+    <string name="campaign_fragment">Campaign Fragment</string>
+    <string name="amount_of_required_funds_myr" />
+    <string name="campaign_title_required" />
+    <string name="short_description" />
+    <string name="campaign_category_required" />
+    <string name="campaign_feature_image_required" />
+    <string name="campaign_end_date" />
+    <string name="choose" />
+    <string name="select" />
+    <string name="campaign_title" />
+    <string name="enter_amount" />
+    <string name="next" />
+    <string name="title_home">Home</string>
+    <string name="nav_account">Account</string>
+</resources>
