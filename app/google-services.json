@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "949399440433",
+    "project_id": "assignment-2f3e6",
+    "storage_bucket": "assignment-2f3e6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:949399440433:android:c5076f4c8839e9d297d910",
+        "android_client_info": {
+          "package_name": "my.edu.tarc.myaapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "949399440433-sme2ffmrl97uua561i932vf6lfgat9a4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZ7u6lKt7zUQlyIcuZg3socUwHJ8LUyxM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "949399440433-sme2ffmrl97uua561i932vf6lfgat9a4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
