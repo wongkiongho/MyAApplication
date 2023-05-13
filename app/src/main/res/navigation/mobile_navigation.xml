@@ -19,11 +19,40 @@
         android:id="@+id/nav_account"
         android:name="my.edu.tarc.myaapplication.ui.Account.AccountFragment"
         android:label="fragment_account"
-        tools:layout="@layout/fragment_account" />
+        tools:layout="@layout/fragment_account" >
+        <action
+            android:id="@+id/action_nav_account_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+        <action
+            android:id="@+id/action_nav_account_to_changepasswordFragment"
+            app:destination="@id/changepasswordFragment" />
+        <action
+            android:id="@+id/action_nav_account_to_historyFragment"
+            app:destination="@id/historyFragment" />
+    </fragment>
     <fragment
         android:id="@+id/nav_campaign"
         android:name="my.edu.tarc.myaapplication.ui.campaign.CampaignFragment"
         android:label="fragment_campaign"
         tools:layout="@layout/fragment_campaign" />
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="my.edu.tarc.myaapplication.DetailsFragment"
+        android:label="fragment_details"
+        tools:layout="@layout/fragment_details" >
+        <action
+            android:id="@+id/action_detailsFragment_to_nav_account"
+            app:destination="@id/nav_account" />
+    </fragment>
+    <fragment
+        android:id="@+id/changepasswordFragment"
+        android:name="my.edu.tarc.myaapplication.ChangepasswordFragment"
+        android:label="fragment_changepassword"
+        tools:layout="@layout/fragment_changepassword" />
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="my.edu.tarc.myaapplication.HistoryFragment"
+        android:label="fragment_history"
+        tools:layout="@layout/fragment_history" />
 
 </navigation>

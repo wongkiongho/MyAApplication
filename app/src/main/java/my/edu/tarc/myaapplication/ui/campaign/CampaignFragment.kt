@@ -1,4 +1,4 @@
-package my.edu.tarc.mobileapplicationassignment
+package my.edu.tarc.myaapplication.ui.campaign
 
 import android.app.Activity
 import android.app.AlertDialog

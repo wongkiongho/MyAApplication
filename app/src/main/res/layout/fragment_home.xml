@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        tools:context=".ui.home.HomeFragment">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline8"
@@ -18,6 +18,7 @@
             app:layout_constraintGuide_begin="211dp" />
 
         <RelativeLayout
+            android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="#F2E4E1"
@@ -58,7 +59,32 @@
                 android:textSize="35sp" />
         </RelativeLayout>
 
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="397dp"
+            android:layout_height="170dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/contribution"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView6" />
 
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="388dp"
+            android:layout_height="239dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/event"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.478"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</FrameLayout>
+</ScrollView>
+
+
+
+
+
+
