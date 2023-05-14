@@ -38,11 +38,9 @@
         android:id="@+id/nav_campaign"
         android:name="my.edu.tarc.myaapplication.ui.campaign.CampaignFragment"
         android:label="fragment_campaign"
-        tools:layout="@layout/fragment_campaign" >
-        <action
-            android:id="@+id/action_nav_campaign_to_eventFragment"
-            app:destination="@id/eventFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_campaign" />
+
+
     <fragment
         android:id="@+id/detailsFragment"
         android:name="my.edu.tarc.myaapplication.DetailsFragment"
