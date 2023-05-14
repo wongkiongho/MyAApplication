@@ -71,6 +71,10 @@
         android:id="@+id/eventFragment"
         android:name="my.edu.tarc.myaapplication.eventFragment"
         android:label="fragment_event"
-        tools:layout="@layout/fragment_event" />
+        tools:layout="@layout/fragment_event" >
+        <action
+            android:id="@+id/action_eventFragment_to_nav_campaign"
+            app:destination="@id/nav_campaign" />
+    </fragment>
 
 </navigation>

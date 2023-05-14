@@ -11,9 +11,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import com.google.firebase.database.*
 import my.edu.tarc.myaapplication.R
 import java.util.*
-import com.google.firebase.database.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -119,9 +122,12 @@ class CampaignFragment : Fragment() {
         nextbutton.setOnClickListener(View.OnClickListener {
             val titleText = view.findViewById<EditText>(R.id.titleText)
             val descText = view.findViewById<EditText>(R.id.shortDesc)
+            val amount = view.findViewById<EditText>(R.id.textInputEditText2)
 
             val title = titleText.text.toString().trim()
             val desc = descText.text.toString().trim()
+
+
 
             if (title.isEmpty() || desc.isEmpty()) {
                 // Show an error message
@@ -140,18 +146,24 @@ class CampaignFragment : Fragment() {
                         })
                     .show()
 
-                // Get the text from the titleText EditText
                 val title = titleText.text.toString()
                 val desc = descText.text.toString()
-                // Create a new Campaign object with the title
                 val campaign = Campaign(title, desc)
 
-                // Add the campaign to the "campaigns" node in the Firebase Database
                 mDatabase.push().setValue(campaign)
                 // Save titleText in database
               //  val campaign = Campaign(title)
                // mDatabase.child("campaigns").push().setValue(campaign)
+                val bundle = Bundle()
+                bundle.putString("title", title)
+                val eventFragment = EventFragment()
+                eventFragment.arguments = bundle
+                //supportFragmentManager.beginTransaction().replace(R.id.fragment_container, eventFragment).commit()
+
+
+
             }
+            //findNavController().navigate(R.id.action_nav_campaign_to_eventFragment)
         })
 
         return view
