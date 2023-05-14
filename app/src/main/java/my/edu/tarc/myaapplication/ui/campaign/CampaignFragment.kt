@@ -16,6 +16,7 @@ import my.edu.tarc.myaapplication.R
 import java.util.*
 
 
+
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
@@ -112,18 +113,29 @@ class CampaignFragment : Fragment() {
         val nextbutton = view.findViewById<Button>(R.id.nextpage)
 
         nextbutton.setOnClickListener(View.OnClickListener {
-            val builder: AlertDialog.Builder = AlertDialog.Builder(activity)
-            builder.setTitle("Confirmation")
-                .setMessage("Are you sure you want to proceed?")
-                .setPositiveButton("Yes", DialogInterface.OnClickListener { dialog, which ->
+            val titleText = view.findViewById<EditText>(R.id.titleText)
+            val descText = view.findViewById<EditText>(R.id.shortDesc)
 
-                })
-                .setNegativeButton(
-                    "No",
-                    DialogInterface.OnClickListener { dialog, which ->
-                        dialog.dismiss()
+            val title = titleText.text.toString().trim()
+            val desc = descText.text.toString().trim()
+
+            if (title.isEmpty() || desc.isEmpty()) {
+                // Show an error message to the user and don't allow them to proceed
+                Toast.makeText(requireContext(), "Please fill in all required fields.", Toast.LENGTH_SHORT).show()
+            } else {
+                val builder: AlertDialog.Builder = AlertDialog.Builder(activity)
+                builder.setTitle("Confirmation")
+                    .setMessage("Are you sure you want to proceed?")
+                    .setPositiveButton("Yes", DialogInterface.OnClickListener { dialog, which ->
+
                     })
-                .show()
+                    .setNegativeButton(
+                        "No",
+                        DialogInterface.OnClickListener { dialog, which ->
+                            dialog.dismiss()
+                        })
+                    .show()
+            }
         })
 
         return view

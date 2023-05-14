@@ -9,7 +9,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.campaign.CampaignFragment">
+        tools:context=".CampaignFragment">
 
         <!-- TODO: Update blank fragment layout -->
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -47,7 +47,7 @@
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/campaignText" />
+                app:layout_constraintTop_toBottomOf="@+id/titleText" />
 
             <TextView
                 android:id="@+id/category_label"
@@ -56,9 +56,9 @@
                 android:layout_marginStart="50dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="65dp"
+                android:labelFor="@+id/category_spinner"
                 android:text="@string/campaign_category_required"
                 android:textSize="20sp"
-                android:labelFor="@+id/category_spinner"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView7" />
@@ -70,7 +70,7 @@
                 android:layout_marginStart="50dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="65dp"
-                android:text="@string/amount_of_required_funds_myr"
+                android:text="Amount of Required Funds (MYR)"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -147,7 +147,7 @@
                 app:layout_constraintTop_toTopOf="@+id/textView15" />
 
             <EditText
-                android:id="@+id/campaignText"
+                android:id="@+id/titleText"
                 android:layout_width="320dp"
                 android:layout_height="60dp"
                 android:layout_marginTop="15dp"

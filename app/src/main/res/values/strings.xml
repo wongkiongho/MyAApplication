@@ -24,18 +24,20 @@
     <string name="Confirmnewpassword">Confirm New Password</string>
     <string name="Companyname">My Aid</string>
     <string name="intro">Welcome back,</string>
+
     <string name="campaign_fragment">Campaign Fragment</string>
     <string name="amount_of_required_funds_myr" />
-    <string name="campaign_title_required" />
-    <string name="short_description" />
-    <string name="campaign_category_required" />
-    <string name="campaign_feature_image_required" />
-    <string name="campaign_end_date" />
-    <string name="choose" />
-    <string name="select" />
-    <string name="campaign_title" />
-    <string name="enter_amount" />
-    <string name="next" />
+    <string name="Next">Next</string>
+    <string name="next">Next</string>
+    <string name="enter_amount">Enter Amount (MYR)</string>
+    <string name="campaign_title">Campaign Title</string>
+    <string name="select">SELECT</string>
+    <string name="choose">CHOOSE</string>
+    <string name="campaign_end_date">Campaign End Date</string>
+    <string name="campaign_feature_image_required">Campaign Feature Image (Required)</string>
+    <string name="campaign_category_required">Campaign Category (Required)</string>
+    <string name="short_description">Short Description</string>
+    <string name="campaign_title_required">Campaign Title (Required)</string>
     <string name="title_home">Home</string>
     <string name="nav_account">Account</string>
 </resources>
