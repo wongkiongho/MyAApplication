@@ -56,10 +56,15 @@
         android:id="@+id/changepasswordFragment"
         android:name="my.edu.tarc.myaapplication.ChangepasswordFragment"
         android:label="fragment_changepassword"
-        tools:layout="@layout/fragment_changepassword" />
+        tools:layout="@layout/fragment_changepassword" >
+        <action
+            android:id="@+id/action_changepasswordFragment_to_nav_account"
+            app:destination="@id/nav_account" />
+    </fragment>
     <fragment
         android:id="@+id/historyFragment"
-        android:name="my.edu.tarc.myaapplication.HistoryFragment"
+
+        android:name="my.edu.tarc.myaapplication.ui.history.HistoryFragment"
         android:label="fragment_history"
         tools:layout="@layout/fragment_history" />
     <fragment
@@ -67,14 +72,6 @@
         android:name="my.edu.tarc.myaapplication.ui.donation.PaymentFragment"
         android:label="fragment_payment"
         tools:layout="@layout/fragment_payment" />
-    <fragment
-        android:id="@+id/eventFragment"
-        android:name="my.edu.tarc.myaapplication.eventFragment"
-        android:label="fragment_event"
-        tools:layout="@layout/fragment_event" >
-        <action
-            android:id="@+id/action_eventFragment_to_nav_campaign"
-            app:destination="@id/nav_campaign" />
-    </fragment>
+
 
 </navigation>

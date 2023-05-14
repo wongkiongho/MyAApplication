@@ -1,4 +1,4 @@
-package my.edu.tarc.myaapplication
+package my.edu.tarc.myaapplication.ui.history
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import my.edu.tarc.myaapplication.ui.history.HistoryViewModel
+import my.edu.tarc.myaapplication.R
 
 class HistoryFragment : Fragment() {
 

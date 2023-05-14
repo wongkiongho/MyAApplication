@@ -6,8 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
+import com.google.firebase.ktx.Firebase
 
 class DetailsFragment : Fragment() {
     private lateinit var mDatabase: DatabaseReference
@@ -15,6 +19,7 @@ class DetailsFragment : Fragment() {
     private lateinit var mEditPhone: EditText
     private lateinit var mEditEmail: EditText
     private lateinit var mButton: Button
+    private lateinit var mButtonBack: Button
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_details, container, false)
@@ -28,6 +33,7 @@ class DetailsFragment : Fragment() {
         mEditPhone = view.findViewById(R.id.editTextPhone)
         mEditEmail = view.findViewById(R.id.editTextTextEmailAddress)
         mButton = view.findViewById(R.id.button3)
+        mButtonBack = view.findViewById(R.id.buttonBack)
 
         val userListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -44,17 +50,30 @@ class DetailsFragment : Fragment() {
                 // Handle database error
             }
         }
-
+        val user = Firebase.auth.currentUser
         // Add the ValueEventListener to the database reference
-        mDatabase.child("qwk").addValueEventListener(userListener)
+        user?.let { mDatabase.child(it.uid).addValueEventListener(userListener) }
 
         mButton.setOnClickListener {
-            // Save the user's edited data to the database
-            val name = mEditName.text.toString()
-            val phone = mEditPhone.text.toString()
-            val email = mEditEmail.text.toString()
+            val name = mEditName.text.toString().trim()
+            val phone = mEditPhone.text.toString().trim()
+            val email = mEditEmail.text.toString().trim()
+
             val user = User(name, phone, email)
-            mDatabase.child(name).setValue(user)
+            val userId = "qwk" // replace with the user ID you want to update
+
+            mDatabase.child(userId).setValue(user).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(requireContext(), "User updated successfully", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(requireContext(), "Failed to update user", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+
+        mButtonBack.setOnClickListener{
+            findNavController().navigate(R.id.action_detailsFragment_to_nav_account)
         }
     }
 
@@ -65,5 +84,5 @@ class DetailsFragment : Fragment() {
 data class User(
     val name: String? = "",
     val phone: String? = "",
-    val email: String? = ""
+    val email: String? = "",
 )
