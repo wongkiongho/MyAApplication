@@ -5,7 +5,6 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +13,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import my.edu.tarc.myaapplication.R
 import java.util.*
-
+import com.google.firebase.database.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -32,6 +31,11 @@ class CampaignFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private val PICK_IMAGE_REQUEST = 1
+
+   // private lateinit var mDatabase: DatabaseReference
+  //  private lateinit var mEditTitle: EditText
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -51,10 +55,12 @@ class CampaignFragment : Fragment() {
         val selectDateButton = view.findViewById<Button>(R.id.datebtn)
         val textView7 = view.findViewById<TextView>(R.id.textView7)
 
-
-
         val selectImageButton = view.findViewById<Button>(R.id.upload_image)
 
+        val mDatabase = FirebaseDatabase.getInstance().getReference("campaigns")
+
+
+        //Select Campaign Image
         selectImageButton.setOnClickListener {
 
             val intent = Intent(Intent.ACTION_PICK)
@@ -65,7 +71,7 @@ class CampaignFragment : Fragment() {
         }
 
 
-        // Set an onClickListener for the button
+        //Select Campaign End Date
         selectDateButton.setOnClickListener {
             // Create a new DatePickerDialog
             val calendar = Calendar.getInstance()
@@ -87,8 +93,6 @@ class CampaignFragment : Fragment() {
 
             // Set the minimum date
             datePickerDialog.datePicker.minDate = calendar.timeInMillis
-
-            // Show the dialog
             datePickerDialog.show()
         }
 
@@ -120,7 +124,7 @@ class CampaignFragment : Fragment() {
             val desc = descText.text.toString().trim()
 
             if (title.isEmpty() || desc.isEmpty()) {
-                // Show an error message to the user and don't allow them to proceed
+                // Show an error message
                 Toast.makeText(requireContext(), "Please fill in all required fields.", Toast.LENGTH_SHORT).show()
             } else {
                 val builder: AlertDialog.Builder = AlertDialog.Builder(activity)
@@ -135,11 +139,25 @@ class CampaignFragment : Fragment() {
                             dialog.dismiss()
                         })
                     .show()
+
+                // Get the text from the titleText EditText
+                val title = titleText.text.toString()
+                val desc = descText.text.toString()
+                // Create a new Campaign object with the title
+                val campaign = Campaign(title, desc)
+
+                // Add the campaign to the "campaigns" node in the Firebase Database
+                mDatabase.push().setValue(campaign)
+                // Save titleText in database
+              //  val campaign = Campaign(title)
+               // mDatabase.child("campaigns").push().setValue(campaign)
             }
         })
 
         return view
     }
+
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -148,14 +166,24 @@ class CampaignFragment : Fragment() {
             // Get the selected image
             val imageUri = data.data
 
-            uploadImage(imageUri)
+           // uploadImage(imageUri)
         }
 
     }
 
-    private fun uploadImage(imageUri: Uri?) {
+  //  private fun uploadImage(imageUri: Uri?) {
 
-    }
+   // }
+    /* private fun uploadImage(imageUri: Uri?) {
+        // Get a reference to Firebase Storage
+        val storageRef = storage.reference
+
+        // Create a unique filename for the image
+        val filename = UUID.randomUUID().toString()
+
+        // Create a StorageReference object that points to the location where the image will be stored in Firebase Storage
+        val imageRef = storageRef.child("images/$filename")
+    }*/
 
     companion object {
         /**
@@ -176,14 +204,7 @@ class CampaignFragment : Fragment() {
                 }
             }
     }
+    data class Campaign(val title: String, val desc: String) {
+        constructor() : this("","")
+    }
 }
-
-
-
-
-
-
-
-
-
-
