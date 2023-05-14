@@ -31,7 +31,7 @@ class DonationFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val emailText = binding.email1?.text.toString()
+
         binding.buttonProceed.setOnClickListener{
 
             if (binding.email1.text.isNullOrEmpty()
@@ -44,10 +44,6 @@ class DonationFragment : Fragment() {
                     requireContext(), "Fill in the required section",
                     Toast.LENGTH_SHORT
                 ).show()
-            }
-
-            if (!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()){
-                print("Invalid email format")
             }
 
 
