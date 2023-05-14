@@ -1,15 +1,13 @@
 package my.edu.tarc.myaapplication
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import androidx.fragment.app.Fragment
+import com.google.firebase.database.*
 
 class DetailsFragment : Fragment() {
     private lateinit var mDatabase: DatabaseReference
@@ -31,7 +29,27 @@ class DetailsFragment : Fragment() {
         mEditEmail = view.findViewById(R.id.editTextTextEmailAddress)
         mButton = view.findViewById(R.id.button3)
 
+        val userListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // Retrieve the user's data from the database
+                val user = dataSnapshot.getValue(User::class.java)
+
+                // Populate the EditText views with the user's data
+                mEditName.setText(user?.name)
+                mEditPhone.setText(user?.phone)
+                mEditEmail.setText(user?.email)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle database error
+            }
+        }
+
+        // Add the ValueEventListener to the database reference
+        mDatabase.child("qwk").addValueEventListener(userListener)
+
         mButton.setOnClickListener {
+            // Save the user's edited data to the database
             val name = mEditName.text.toString()
             val phone = mEditPhone.text.toString()
             val email = mEditEmail.text.toString()
@@ -39,6 +57,9 @@ class DetailsFragment : Fragment() {
             mDatabase.child(name).setValue(user)
         }
     }
+
+
+
 }
 
 data class User(
