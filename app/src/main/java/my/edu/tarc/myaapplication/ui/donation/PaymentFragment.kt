@@ -36,14 +36,14 @@ class PaymentFragment : Fragment() {
         binding.editTextPaidAmount.setText(DonationViewModel.payment.toString())
         binding.editTextPerson.setText(DonationViewModel.name.toString())
         binding.buttonConfirm.setOnClickListener{
+            val currentTime = LocalTime.now()
+
+            // format the time as a string
+            val formatter = DateTimeFormatter.ofPattern("hh:mm:ss a")
+            val formattedTime = currentTime.format(formatter)
 
             val pMethod = binding.radioGroup2.checkedRadioButtonId
             if(pMethod == binding.radioButtonCash.id){
-                val currentTime = LocalTime.now()
-
-                // format the time as a string
-                val formatter = DateTimeFormatter.ofPattern("hh:mm:ss a")
-                val formattedTime = currentTime.format(formatter)
 
                 val builder = AlertDialog.Builder(requireContext())
                 builder.setMessage("Time:"+formattedTime+"\n"+"Name: " + DonationViewModel.name.toString() + "\n" + "Amount Paid: " + DonationViewModel.payment.toString() +"\n"+"Payment Method:"+binding.radioButtonCash.text.toString()+"\n" + "Payment Successful")
@@ -55,9 +55,9 @@ class PaymentFragment : Fragment() {
                 builder.create().show()
 
             }
-            if(pMethod == binding.radioButtonBank.id){
+            else if(pMethod == binding.radioButtonBank.id){
                 val builder = AlertDialog.Builder(requireContext())
-                builder.setMessage("Name: " + DonationViewModel.name.toString() + "\n" + "Amount Paid: " + DonationViewModel.payment.toString() +"\n"+"Payment Method:"+binding.radioButtonBank.text.toString()+ "\n" + "Payment Successful")
+                builder.setMessage("Time:"+formattedTime+"\n"+"Name: " + DonationViewModel.name.toString() + "\n" + "Amount Paid: " + DonationViewModel.payment.toString() +"\n"+"Payment Method:"+binding.radioButtonBank.text.toString()+ "\n" + "Payment Successful")
                     .setCancelable(false)
                     .setPositiveButton("Ok") { _, _ ->
                         // Do something or nothing when click ok
@@ -67,7 +67,7 @@ class PaymentFragment : Fragment() {
             }
             else{
                 val builder = AlertDialog.Builder(requireContext())
-                builder.setMessage("Name: " + DonationViewModel.name.toString() + "\n" + "Amount Paid: " + DonationViewModel.payment.toString() +"\n"+"Payment Method:"+binding.radioButtonTngo.text.toString()+ "\n" + "Payment Successful")
+                builder.setMessage("Time:"+formattedTime+"\n"+"Name: " + DonationViewModel.name.toString() + "\n" + "Amount Paid: " + DonationViewModel.payment.toString() +"\n"+"Payment Method:"+binding.radioButtonTngo.text.toString()+ "\n" + "Payment Successful")
                     .setCancelable(false)
                     .setPositiveButton("Ok") { _, _ ->
                         // Do something or nothing when click ok

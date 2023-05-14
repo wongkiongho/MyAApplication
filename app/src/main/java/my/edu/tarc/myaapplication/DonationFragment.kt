@@ -10,6 +10,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import my.edu.tarc.myaapplication.databinding.FragmentDonationBinding
 import my.edu.tarc.myaapplication.ui.donation.DonationViewModel
 import java.time.LocalTime
@@ -18,6 +22,7 @@ import java.time.format.DateTimeFormatter
 class DonationFragment : Fragment() {
     private var _binding: FragmentDonationBinding? = null
     private val binding get() = _binding!!
+    private lateinit var database: DatabaseReference
 
     private val DonationViewModel: DonationViewModel by activityViewModels()
 
@@ -31,6 +36,7 @@ class DonationFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         binding.buttonProceed.setOnClickListener{
 
@@ -48,9 +54,13 @@ class DonationFragment : Fragment() {
 
 
             else {
+                database = FirebaseDatabase.getInstance().getReference("donate")
                 val name = binding.name1.text.toString()
                 val email = binding.email1.text.toString()
                 val contact = binding.inputContact1.text.toString()
+                val amount = binding.editTextAmount.text.toString().toInt()
+                val donate = Donateuser(name,email,contact,amount)
+                database.child(name).setValue(donate)
 
 
 
@@ -84,3 +94,10 @@ class DonationFragment : Fragment() {
 
 
 }
+
+data class Donateuser(
+    val name1: String? = "",
+    val phone1: String? = "",
+    val email1: String? = "",
+    val amount: Int? = null
+)
