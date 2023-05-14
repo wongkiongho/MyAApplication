@@ -38,7 +38,11 @@
         android:id="@+id/nav_campaign"
         android:name="my.edu.tarc.myaapplication.ui.campaign.CampaignFragment"
         android:label="fragment_campaign"
-        tools:layout="@layout/fragment_campaign" />
+        tools:layout="@layout/fragment_campaign" >
+        <action
+            android:id="@+id/action_nav_campaign_to_eventFragment"
+            app:destination="@id/eventFragment" />
+    </fragment>
     <fragment
         android:id="@+id/detailsFragment"
         android:name="my.edu.tarc.myaapplication.DetailsFragment"
@@ -63,5 +67,10 @@
         android:name="my.edu.tarc.myaapplication.ui.donation.PaymentFragment"
         android:label="fragment_payment"
         tools:layout="@layout/fragment_payment" />
+    <fragment
+        android:id="@+id/eventFragment"
+        android:name="my.edu.tarc.myaapplication.eventFragment"
+        android:label="fragment_event"
+        tools:layout="@layout/fragment_event" />
 
 </navigation>
