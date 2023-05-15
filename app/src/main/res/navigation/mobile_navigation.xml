@@ -13,8 +13,8 @@
     <fragment
         android:id="@+id/nav_donation"
         android:name="my.edu.tarc.myaapplication.DonationFragment"
-        android:label="fragment_donation"
-        tools:layout="@layout/fragment_donation" >
+        android:label="Donation"
+        tools:layout="@layout/fragment_donation">
         <action
             android:id="@+id/action_nav_donation_to_paymentFragment"
             app:destination="@id/paymentFragment" />
@@ -69,7 +69,11 @@
         android:id="@+id/paymentFragment"
         android:name="my.edu.tarc.myaapplication.ui.donation.PaymentFragment"
         android:label="fragment_payment"
-        tools:layout="@layout/fragment_payment" />
+        tools:layout="@layout/fragment_payment" >
+        <action
+            android:id="@+id/action_paymentFragment_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
 
 
 </navigation>

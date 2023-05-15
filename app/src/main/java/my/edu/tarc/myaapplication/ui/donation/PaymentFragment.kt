@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import my.edu.tarc.myaapplication.R
 import my.edu.tarc.myaapplication.databinding.FragmentPaymentBinding
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -49,7 +51,8 @@ class PaymentFragment : Fragment() {
                 builder.setMessage("Time:"+formattedTime+"\n"+"Name: " + DonationViewModel.name.toString() + "\n" + "Amount Paid: " + DonationViewModel.payment.toString() +"\n"+"Payment Method:"+binding.radioButtonCash.text.toString()+"\n" + "Payment Successful")
                     .setCancelable(false)
                     .setPositiveButton("Ok") { _, _ ->
-                        // Do something or nothing when click ok
+
+                        findNavController().navigate(R.id.action_paymentFragment_to_nav_home)
 
                     }
                 builder.create().show()
@@ -61,7 +64,7 @@ class PaymentFragment : Fragment() {
                     .setCancelable(false)
                     .setPositiveButton("Ok") { _, _ ->
                         // Do something or nothing when click ok
-
+                        findNavController().navigate(R.id.action_paymentFragment_to_nav_home)
                     }
                 builder.create().show()
             }
@@ -71,6 +74,7 @@ class PaymentFragment : Fragment() {
                     .setCancelable(false)
                     .setPositiveButton("Ok") { _, _ ->
                         // Do something or nothing when click ok
+                        findNavController().navigate(R.id.action_paymentFragment_to_nav_home)
 
                     }
                 builder.create().show()
