@@ -27,7 +27,7 @@ class ChangepasswordFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val user1 = Firebase.auth.currentUser
+        val user = Firebase.auth.currentUser
 
         mDatabase = FirebaseDatabase.getInstance().getReference("User")
         mCurrentPassword = view.findViewById(R.id.editTextTextPassword)
@@ -41,8 +41,7 @@ class ChangepasswordFragment : Fragment() {
         }
 
         mButton.setOnClickListener {
-
-            val currentUser = user1?.let { it1 -> mDatabase.child(it1.uid) }
+            val currentUser = user?.let { it1 -> mDatabase.child(it1.uid) }
             currentUser?.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     // Get the User object from the snapshot
@@ -53,37 +52,16 @@ class ChangepasswordFragment : Fragment() {
                         // Passwords match, update the password field in Firebase
                         if (mNewPassword.text.toString() == mConfirmPassword.text.toString()) {
                             currentUser.child("password").setValue(mNewPassword.text.toString())
-                            user1?.let {
-                                user1.updatePassword(mNewPassword.text.toString())
-                                    .addOnCompleteListener { task ->
-                                        if (task.isSuccessful) {
-                                            // Password changed successfully
-                                            // You can display a success message or perform any other desired action
-                                            Toast.makeText(
-                                                requireContext(), "Successful changed password",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        } else {
-                                            // An error occurred while changing the password
-                                            // You can display an error message or handle the error accordingly
-                                        }
-                                    }
-                            }
                             // Display success message
-
-                        } else {
-                            // Display error message for new password and confirm password not matching
                             Toast.makeText(
-                                requireContext(), "new password and confirm password not matching",
+                                requireContext(), "Successful changed password",
                                 Toast.LENGTH_SHORT
                             ).show()
+                        } else {
+                            // Display error message for new password and confirm password not matching
                         }
                     } else {
                         // Display error message for incorrect password
-                        Toast.makeText(
-                            requireContext(), "incorrect password",
-                            Toast.LENGTH_SHORT
-                        ).show()
                     }
                 }
 
