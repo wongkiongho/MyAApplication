@@ -6,9 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import my.edu.tarc.myaapplication.Donateuser
 import my.edu.tarc.myaapplication.R
 import my.edu.tarc.myaapplication.databinding.FragmentPaymentBinding
 import java.time.LocalTime
@@ -19,6 +23,7 @@ class PaymentFragment : Fragment() {
     private var _binding: FragmentPaymentBinding? = null
     private val binding get() = _binding!!
     private val DonationViewModel: DonationViewModel by activityViewModels()
+    private lateinit var pdatabase: DatabaseReference
 
 
 
@@ -33,6 +38,13 @@ class PaymentFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        pdatabase = FirebaseDatabase.getInstance().getReference("payment")
+        val cash = binding.radioGroup2.checkedRadioButtonId
+        val tng = binding.radioButtonTngo.toString()
+        val bank = binding.radioButtonBank.toString()
+       // val payment = PaymentUser(DonationViewModel.name.toString(),cash)
+       // pdatabase.child(DonationViewModel.name.toString()).setValue(payment)
+
 
 
         binding.editTextPaidAmount.setText(DonationViewModel.payment.toString())
@@ -46,6 +58,7 @@ class PaymentFragment : Fragment() {
 
             val pMethod = binding.radioGroup2.checkedRadioButtonId
             if(pMethod == binding.radioButtonCash.id){
+
 
                 val builder = AlertDialog.Builder(requireContext())
                 builder.setMessage("Time:"+formattedTime+"\n"+"Name: " + DonationViewModel.name.toString() + "\n" + "Amount Paid: " + DonationViewModel.payment.toString() +"\n"+"Payment Method:"+binding.radioButtonCash.text.toString()+"\n" + "Payment Successful")
@@ -83,3 +96,5 @@ class PaymentFragment : Fragment() {
     }
 
 }
+
+

@@ -25,6 +25,7 @@ class DonationFragment : Fragment() {
     private lateinit var database: DatabaseReference
 
     private val DonationViewModel: DonationViewModel by activityViewModels()
+    //val donate = firebase.auth.currentuser
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +37,8 @@ class DonationFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
 
 
         binding.buttonProceed.setOnClickListener{
@@ -50,6 +53,14 @@ class DonationFragment : Fragment() {
                     requireContext(), "Fill in the required section",
                     Toast.LENGTH_SHORT
                 ).show()
+            }else if (!Patterns.EMAIL_ADDRESS.matcher(binding.email1.text.toString()).matches()){
+                Toast.makeText(
+                    requireContext(), "Email must be valid",
+                    Toast.LENGTH_SHORT).show()
+            }else if(!Patterns.PHONE.matcher(binding.inputContact1.text.toString()).matches()){
+                Toast.makeText(
+                    requireContext(), "Phone must be valid",
+                    Toast.LENGTH_SHORT).show()
             }
 
 
@@ -57,7 +68,7 @@ class DonationFragment : Fragment() {
                 database = FirebaseDatabase.getInstance().getReference("donate")
                 val name = binding.name1.text.toString()
                 val email = binding.email1.text.toString()
-                val contact = binding.inputContact1.text.toString()
+                val contact = binding.inputContact1.text.toString().toInt()
                 val amount = binding.editTextAmount.text.toString().toInt()
                 val donate = Donateuser(name,email,contact,amount)
                 database.child(name).setValue(donate)
@@ -97,7 +108,7 @@ class DonationFragment : Fragment() {
 
 data class Donateuser(
     val name1: String? = "",
-    val phone1: String? = "",
     val email1: String? = "",
+    val phone1: Int? = null,
     val amount: Int? = null
 )
