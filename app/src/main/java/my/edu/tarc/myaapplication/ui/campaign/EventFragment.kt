@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import my.edu.tarc.myaapplication.R
 
 
@@ -69,5 +71,13 @@ class EventFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+    private lateinit var mButtonDonate: Button
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mButtonDonate = view.findViewById(R.id.donatebtn)
+        mButtonDonate.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_event_to_nav_donation)
+        }
     }
 }

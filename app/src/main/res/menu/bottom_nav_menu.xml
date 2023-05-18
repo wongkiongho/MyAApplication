@@ -8,7 +8,7 @@
 
     <item
         android:title="@string/nav_donation"
-        android:id="@+id/nav_donation"
+        android:id="@+id/nav_event"
         android:icon="@drawable/baseline_donation_24" />
 
     <item
