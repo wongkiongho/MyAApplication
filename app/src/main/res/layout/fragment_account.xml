@@ -100,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="365dp" />
+            app:layout_constraintGuide_begin="348dp" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView7"
@@ -112,6 +112,7 @@
             app:cardCornerRadius="5dp"
             app:cardElevation="5dp"
             app:layout_constraintBottom_toTopOf="@+id/guideline17"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline9">
 
@@ -158,7 +159,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_end="309dp" />
+            app:layout_constraintGuide_percent="0.60328317" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView6"
