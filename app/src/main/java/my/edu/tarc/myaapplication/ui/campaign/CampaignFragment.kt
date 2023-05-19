@@ -11,50 +11,36 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
-import androidx.navigation.Navigation.findNavController
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.database.*
 import my.edu.tarc.myaapplication.R
+import my.edu.tarc.myaapplication.databinding.FragmentCampaignBinding
+import my.edu.tarc.myaapplication.databinding.FragmentDonationBinding
+import my.edu.tarc.myaapplication.databinding.FragmentEventBinding
 import java.util.*
 
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [CampaignFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class CampaignFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    private val PICK_IMAGE_REQUEST = 1
-
-   // private lateinit var mDatabase: DatabaseReference
-  //  private lateinit var mEditTitle: EditText
+    private var _binding: FragmentCampaignBinding? = null
+    private val binding get() = _binding!!
+    private val CampaignFragment: CampaignViewModel by activityViewModels()
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_campaign, container, false)
+        _binding = FragmentCampaignBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val selectDateButton = view.findViewById<Button>(R.id.datebtn)
         val textView7 = view.findViewById<TextView>(R.id.textView7)
 
@@ -63,15 +49,7 @@ class CampaignFragment : Fragment() {
         val mDatabase = FirebaseDatabase.getInstance().getReference("campaigns")
 
 
-        //Select Campaign Image
-        selectImageButton.setOnClickListener {
 
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-
-
-            startActivityForResult(intent, PICK_IMAGE_REQUEST)
-        }
 
 
         //Select Campaign End Date
@@ -122,7 +100,7 @@ class CampaignFragment : Fragment() {
         nextbutton.setOnClickListener(View.OnClickListener {
             val titleText = view.findViewById<EditText>(R.id.titleText)
             val descText = view.findViewById<EditText>(R.id.shortDesc)
-            val amount = view.findViewById<EditText>(R.id.textInputEditText2)
+
 
             val title = titleText.text.toString().trim()
             val desc = descText.text.toString().trim()
@@ -150,6 +128,9 @@ class CampaignFragment : Fragment() {
                 val desc = descText.text.toString()
                 val campaign = Campaign(title, desc)
 
+                CampaignFragment.title = binding.titleText.toString()
+                CampaignFragment.amount = binding.textAmount.toString().toInt()
+
                 mDatabase.push().setValue(campaign)
                 // Save titleText in database
               //  val campaign = Campaign(title)
@@ -159,29 +140,19 @@ class CampaignFragment : Fragment() {
                 val eventFragment = EventFragment()
                 eventFragment.arguments = bundle
                 //supportFragmentManager.beginTransaction().replace(R.id.fragment_container, eventFragment).commit()
-
+                findNavController().navigate(R.id.action_nav_campaign_to_nav_event)
 
 
             }
             //findNavController().navigate(R.id.action_nav_campaign_to_eventFragment)
         })
 
-        return view
-    }
-
-
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
-            // Get the selected image
-            val imageUri = data.data
-
-           // uploadImage(imageUri)
-        }
 
     }
+
+
+
+
 
   //  private fun uploadImage(imageUri: Uri?) {
 
@@ -206,17 +177,8 @@ class CampaignFragment : Fragment() {
          * @param param2 Parameter 2.
          * @return A new instance of fragment CampaignFragment.
          */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CampaignFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
+
     data class Campaign(val title: String, val desc: String) {
         constructor() : this("","")
     }
-}
+}}

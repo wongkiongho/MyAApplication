@@ -27,7 +27,7 @@ class DonationFragment : Fragment() {
     private lateinit var database: DatabaseReference
 
     private val DonationViewModel: DonationViewModel by activityViewModels()
-    //val donate = firebase.auth.currentuser
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

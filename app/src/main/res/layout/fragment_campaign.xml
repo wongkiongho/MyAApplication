@@ -87,7 +87,7 @@
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputEditText2" />
+                app:layout_constraintTop_toBottomOf="@+id/textAmount" />
 
             <TextView
                 android:id="@+id/textView8"
@@ -182,7 +182,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/category_label" />
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputEditText2"
+                android:id="@+id/textAmount"
                 android:layout_width="262dp"
                 android:layout_height="60dp"
                 android:layout_marginTop="13dp"
