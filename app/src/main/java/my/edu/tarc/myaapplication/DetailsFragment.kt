@@ -9,9 +9,11 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
+
 
 class DetailsFragment : Fragment() {
     private lateinit var mDatabase: DatabaseReference
@@ -20,6 +22,9 @@ class DetailsFragment : Fragment() {
     private lateinit var mEditEmail: EditText
     private lateinit var mButton: Button
     private lateinit var mButtonBack: Button
+    private lateinit var authListener: FirebaseAuth.AuthStateListener
+    val currentUser = Firebase.auth.currentUser
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_details, container, false)
@@ -28,6 +33,7 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         mDatabase = FirebaseDatabase.getInstance().getReference("User")
         mEditName = view.findViewById(R.id.editTextTextPersonName2)
         mEditPhone = view.findViewById(R.id.editTextPhone)
@@ -35,41 +41,55 @@ class DetailsFragment : Fragment() {
         mButton = view.findViewById(R.id.button3)
         mButtonBack = view.findViewById(R.id.buttonBack)
 
-        val userListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // Retrieve the user's data from the database
-                val user = dataSnapshot.getValue(User::class.java)
+            val userId = currentUser?.uid.toString()
 
-                // Populate the EditText views with the user's data
-                mEditName.setText(user?.name)
-                mEditPhone.setText(user?.phone)
-                mEditEmail.setText(user?.email)
-            }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Handle database error
-            }
-        }
-        val user = Firebase.auth.currentUser
-        // Add the ValueEventListener to the database reference
-        user?.let { mDatabase.child(it.uid).addValueEventListener(userListener) }
+            mDatabase.child(userId).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val user = dataSnapshot.getValue(User::class.java)
+
+                    user?.let {
+                        mEditName.setText(it.name)
+                        mEditPhone.setText(it.phone)
+                        mEditEmail.setText(it.email)
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Handle database error
+                }
+            })
+
+
+
+
 
         mButton.setOnClickListener {
             val name = mEditName.text.toString().trim()
             val phone = mEditPhone.text.toString().trim()
             val email = mEditEmail.text.toString().trim()
+            val userId = currentUser?.uid
 
-            val user = User(name, phone, email)
-            val userId = "qwk" // replace with the user ID you want to update
+            val childUpdates = HashMap<String, Any>()
+            childUpdates["name"] = name
+            childUpdates["phone"] = phone
+            childUpdates["email"] = email
+            currentUser?.updateEmail(email)
+            mDatabase.child(userId.toString()).updateChildren(childUpdates)
+                .addOnCompleteListener { dbTask ->
+                    if (dbTask.isSuccessful) {
+                        Toast.makeText(requireContext(), "User details updated successfully", Toast.LENGTH_SHORT).show()
 
-            mDatabase.child(userId).setValue(user).addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(requireContext(), "User updated successfully", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(requireContext(), "Failed to update user", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(requireContext(), "Failed to update user details", Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }
         }
+
+
+
+
+
 
 
         mButtonBack.setOnClickListener{
@@ -77,12 +97,11 @@ class DetailsFragment : Fragment() {
         }
     }
 
+    // Function to update email and user details in Firebase
 
 
 }
 
-data class User(
-    val name: String? = "",
-    val phone: String? = "",
-    val email: String? = "",
-)
+
+
+
