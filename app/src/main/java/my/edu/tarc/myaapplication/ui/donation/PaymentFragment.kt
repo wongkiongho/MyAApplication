@@ -2,6 +2,7 @@ package my.edu.tarc.myaapplication.ui.donation
 
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -38,7 +39,7 @@ class PaymentFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        pdatabase = FirebaseDatabase.getInstance().getReference("payment")
+        pdatabase = FirebaseDatabase.getInstance().getReference("donate")
         val cash = binding.radioGroup2.checkedRadioButtonId
         val tng = binding.radioButtonTngo.toString()
         val bank = binding.radioButtonBank.toString()
@@ -46,7 +47,13 @@ class PaymentFragment : Fragment() {
        // pdatabase.child(DonationViewModel.name.toString()).setValue(payment)
 
 
+       val ok = DonationViewModel.name
+        Log.d("Check","$ok")
+        if (ok != null) {
+            pdatabase.child(ok).get().addOnSuccessListener {
 
+            }
+        }
         binding.editTextPaidAmount.setText(DonationViewModel.payment.toString())
         binding.editTextPerson.setText(DonationViewModel.name.toString())
         binding.buttonConfirm.setOnClickListener{

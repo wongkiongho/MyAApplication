@@ -1,6 +1,7 @@
 package my.edu.tarc.myaapplication
 
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
@@ -37,6 +39,8 @@ class DonationFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val userId = Firebase.auth.currentUser?.uid
+        Log.d("Check1","$userId")
 
 
 
@@ -71,7 +75,9 @@ class DonationFragment : Fragment() {
                 val contact = binding.inputContact1.text.toString().toInt()
                 val amount = binding.editTextAmount.text.toString().toInt()
                 val donate = Donateuser(name,email,contact,amount)
-                database.child(name).setValue(donate)
+                if (userId != null) {
+                    database.child(userId).setValue(donate)
+                }
 
 
 

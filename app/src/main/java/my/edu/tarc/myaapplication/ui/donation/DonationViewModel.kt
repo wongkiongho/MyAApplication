@@ -7,6 +7,7 @@ import my.edu.tarc.myaapplication.Donateuser
 class DonationViewModel(application: Application) : AndroidViewModel(application) {
     var payment: Int? = null;
     var name: String? = null;
+    var selectedD: Donateuser? = null
 
 
 }
