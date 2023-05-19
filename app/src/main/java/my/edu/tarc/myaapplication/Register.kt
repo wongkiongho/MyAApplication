@@ -9,11 +9,16 @@ import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 
 class Register : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var mDatabase: DatabaseReference
+    private lateinit var mEmail : EditText
+    private lateinit var mPassword : EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,13 +34,15 @@ class Register : AppCompatActivity() {
         }
 
         val registerButton: Button = findViewById(R.id.button_register)
+        mDatabase = FirebaseDatabase.getInstance().getReference("User")
+        mEmail = findViewById(R.id.editText_email_register)
+        mPassword = findViewById(R.id.editText_password_register)
 
-        registerButton.setOnClickListener{
+        registerButton.setOnClickListener {
             performSignUp()
         }
 
         //get email and password from user
-
     }
 
     private fun performSignUp() {
@@ -43,32 +50,61 @@ class Register : AppCompatActivity() {
         val password = findViewById<EditText>(R.id.editText_password_register)
 
         if (email.text.isEmpty() || password.text.isEmpty()){
-            Toast.makeText(this, "Please fill all field", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
             return
         }
 
         val inputEmail = email.text.toString()
         val inputPassword = password.text.toString()
 
-        auth.createUserWithEmailAndPassword(inputEmail,inputPassword)
+        auth.createUserWithEmailAndPassword(inputEmail, inputPassword)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, let move to the next activity
+                    val user = auth.currentUser
+                    user?.let {
+                        val userId = it.uid
+                        val email = it.email.toString()
+                        val password = mPassword.text.toString().trim()
+
+                        val childUpdates = HashMap<String, Any>()
+                        childUpdates["email"] = email
+                        childUpdates["password"] = password
+
+                        mDatabase.child(userId.toString()).updateChildren(childUpdates)
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    Toast.makeText(
+                                        this,
+                                        "User registered successfully",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                } else {
+                                    Toast.makeText(
+                                        this,
+                                        "User failed to register",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+                    }
 
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
 
-                    Toast.makeText(baseContext,"Success",
-                        Toast.LENGTH_SHORT).show()
-
+                    Toast.makeText(
+                        baseContext,
+                        "Registration successful",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 } else {
-                    // If sign in fails, display a message to the user.
-                    Toast.makeText(baseContext,"Authentication failed.",
-                        Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        baseContext,
+                        "Authentication failed: ${task.exception?.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-            }
-            .addOnFailureListener{
-                Toast.makeText(this, "Error occurred ${it.localizedMessage}",Toast.LENGTH_SHORT).show()
             }
     }
 }
+
+

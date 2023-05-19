@@ -27,7 +27,7 @@ class ChangepasswordFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val user = Firebase.auth.currentUser
+        val currentUser = Firebase.auth.currentUser
 
         mDatabase = FirebaseDatabase.getInstance().getReference("User")
         mCurrentPassword = view.findViewById(R.id.editTextTextPassword)
@@ -41,8 +41,8 @@ class ChangepasswordFragment : Fragment() {
         }
 
         mButton.setOnClickListener {
-            val currentUser = user?.let { it1 -> mDatabase.child(it1.uid) }
-            currentUser?.addListenerForSingleValueEvent(object : ValueEventListener {
+            val userId = currentUser?.uid.toString()
+            mDatabase.child(userId).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     // Get the User object from the snapshot
                     val user = snapshot.getValue(User::class.java)
@@ -51,7 +51,10 @@ class ChangepasswordFragment : Fragment() {
                     if (user != null && user.password == mCurrentPassword.text.toString()) {
                         // Passwords match, update the password field in Firebase
                         if (mNewPassword.text.toString() == mConfirmPassword.text.toString()) {
-                            currentUser.child("password").setValue(mNewPassword.text.toString())
+                            currentUser?.updatePassword(mNewPassword.text.toString())
+                            val childUpdates = HashMap<String, Any>()
+                            childUpdates["password"] = mNewPassword.text.toString()
+                            mDatabase.child(userId).updateChildren(childUpdates)
                             // Display success message
                             Toast.makeText(
                                 requireContext(), "Successful changed password",
@@ -73,10 +76,5 @@ class ChangepasswordFragment : Fragment() {
 
     }
 
-    data class User(
-        val name: String? = "",
-        val phone: String? = "",
-        val email: String? = "",
-        val password: String? = ""
-    )
+
 }
