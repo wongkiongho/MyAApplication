@@ -1,3 +1,4 @@
+//campaignFragment
 package my.edu.tarc.myaapplication.ui.campaign
 
 import android.app.Activity
@@ -5,17 +6,20 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import my.edu.tarc.myaapplication.R
 import my.edu.tarc.myaapplication.databinding.FragmentCampaignBinding
 import my.edu.tarc.myaapplication.databinding.FragmentDonationBinding
@@ -27,10 +31,10 @@ import java.util.*
 class CampaignFragment : Fragment() {
     private var _binding: FragmentCampaignBinding? = null
     private val binding get() = _binding!!
-    private val CampaignFragment: CampaignViewModel by activityViewModels()
+    //private val CampaignFragment: CampaignViewModel by activityViewModels()
 
-
-
+    private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
+    private var selectedImageUri: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,10 +52,27 @@ class CampaignFragment : Fragment() {
 
         val selectImageButton = view.findViewById<Button>(R.id.upload_image)
 
+        val mDatabase = FirebaseDatabase.getInstance().getReference("campaigns")
+        val storageRef = FirebaseStorage.getInstance().reference
 
+        // Select image function
 
+        imagePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data: Intent? = result.data
+                val imageUri: Uri? = data?.data
 
+                if (imageUri != null) {
+                    selectedImageUri = imageUri
+                    // Process the selected image URI here or perform any other operations
+                }
+            }
+        }
 
+        selectImageButton.setOnClickListener {
+            val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            imagePickerLauncher.launch(galleryIntent)
+        }
 
 
         //Select Campaign End Date
@@ -84,11 +105,11 @@ class CampaignFragment : Fragment() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         val categorySpinner = view.findViewById<Spinner>(R.id.category_spinner)
         categorySpinner.adapter = adapter
-        var selectedCategory = "";
+
         categorySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
-                selectedCategory = categories[position]
+                val selectedCategory = categories[position]
                 Toast.makeText(requireContext(), "You selected $selectedCategory", Toast.LENGTH_SHORT).show()
             }
 
@@ -106,22 +127,61 @@ class CampaignFragment : Fragment() {
 
             val title = titleText.text.toString().trim()
             val desc = descText.text.toString().trim()
+            val imageUri = selectedImageUri.toString().trim()
 
 
 
             if (title.isEmpty() || desc.isEmpty()) {
                 // Show an error message
-                Toast.makeText(
-                    requireContext(),
-                    "Please fill in all required fields.",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(requireContext(), "Please fill in all required fields.", Toast.LENGTH_SHORT).show()
             } else {
                 val builder: AlertDialog.Builder = AlertDialog.Builder(activity)
                 builder.setTitle("Confirmation")
                     .setMessage("Are you sure you want to proceed?")
                     .setPositiveButton("Yes", DialogInterface.OnClickListener { dialog, which ->
 
+                        selectedImageUri?.let { imageUri ->
+                            val filename = UUID.randomUUID().toString()
+                            val imageRef = storageRef.child("images/$filename")
+                            val uploadTask = imageRef.putFile(imageUri)
+
+
+                            val title = titleText.text.toString()
+                            val desc = descText.text.toString()
+                            // val imageUri = selectedImageUri.toString().trim()
+
+                            /* val campaign = Campaign(title, desc, "")
+                             mDatabase.push().setValue(campaign)
+                             findNavController().navigate(R.id.action_nav_campaign_to_nav_event)*/
+
+                            uploadTask.addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    // Get the download URL of the uploaded image
+                                    imageRef.downloadUrl.addOnCompleteListener { urlTask ->
+                                        if (urlTask.isSuccessful) {
+                                            val imageUrl = urlTask.result.toString()
+
+                                            val campaign = Campaign(title, desc, imageUrl)
+                                            mDatabase.push().setValue(campaign)
+
+                                            findNavController().navigate(R.id.action_nav_campaign_to_nav_event)
+                                        } else {
+                                            // Handle failure to get download URL
+                                            Toast.makeText(requireContext(), "Failed to get image download URL.", Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
+                                } else {
+                                    // Handle image upload failure
+                                    Toast.makeText(requireContext(), "Failed to upload image.", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        } ?: run {
+                            // No image selected
+                            val campaign = Campaign(title, desc, "")
+                            mDatabase.push().setValue(campaign)
+
+                            findNavController().navigate(R.id.action_nav_campaign_to_nav_event)
+                        }
                     })
                     .setNegativeButton(
                         "No",
@@ -129,44 +189,21 @@ class CampaignFragment : Fragment() {
                             dialog.dismiss()
                         })
                     .show()
-                CampaignFragment.categories = selectedCategory
-                CampaignFragment.userId= Firebase.auth.currentUser?.uid.toString()
-                CampaignFragment.endDate = textView7.text.toString()
-                CampaignFragment.title = titleText.text.toString()
-                CampaignFragment.desc = descText.text.toString()
-                CampaignFragment.requireAmount = binding.textAmount.text.toString().toInt()
-                context?.let { it1 -> CampaignFragment.saveDataToFirebase(it1)  }
-
-                        //CampaignFragment.title = binding.titleText.toString()
-                        //CampaignFragment.amount = binding.textAmount.toString().toInt()
-
-                        //mDatabase.push().setValue(campaign)
-                        // Save titleText in database
-                        //  val campaign = Campaign(title)
-                        // mDatabase.child("campaigns").push().setValue(campaign)
-                        // val bundle = Bundle()
-                        //bundle.putString("title", title)
-                        //val eventFragment = EventFragment()
-                        //eventFragment.arguments = bundle
-                        //supportFragmentManager.beginTransaction().replace(R.id.fragment_container, eventFragment).commit()
-                        //findNavController().navigate(R.id.action_nav_campaign_to_nav_event)
 
 
 
-                //findNavController().navigate(R.id.action_nav_campaign_to_eventFragment)
+
             }
+            //findNavController().navigate(R.id.action_nav_campaign_to_eventFragment)
         })
 
 
     }
 
 
+    //  private fun uploadImage(imageUri: Uri?) {
 
-
-
-  //  private fun uploadImage(imageUri: Uri?) {
-
-   // }
+    // }
     /* private fun uploadImage(imageUri: Uri?) {
         // Get a reference to Firebase Storage
         val storageRef = storage.reference
@@ -179,6 +216,8 @@ class CampaignFragment : Fragment() {
     }*/
 
     companion object {
+
+        private const val GALLERY_REQUEST_CODE = 1
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
@@ -188,7 +227,5 @@ class CampaignFragment : Fragment() {
          * @return A new instance of fragment CampaignFragment.
          */
 
-    data class Campaign(val desc: String, val requireAmount: Int, val userId: String) {
-        constructor() : this("",0,"")
-    }
-}}
+
+    }}
