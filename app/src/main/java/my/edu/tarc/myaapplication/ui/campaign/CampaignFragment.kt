@@ -13,7 +13,9 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
+import com.google.firebase.ktx.Firebase
 import my.edu.tarc.myaapplication.R
 import my.edu.tarc.myaapplication.databinding.FragmentCampaignBinding
 import my.edu.tarc.myaapplication.databinding.FragmentDonationBinding
@@ -46,7 +48,7 @@ class CampaignFragment : Fragment() {
 
         val selectImageButton = view.findViewById<Button>(R.id.upload_image)
 
-        val mDatabase = FirebaseDatabase.getInstance().getReference("campaigns")
+
 
 
 
@@ -82,11 +84,11 @@ class CampaignFragment : Fragment() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         val categorySpinner = view.findViewById<Spinner>(R.id.category_spinner)
         categorySpinner.adapter = adapter
-
+        var selectedCategory = "";
         categorySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
-                val selectedCategory = categories[position]
+                selectedCategory = categories[position]
                 Toast.makeText(requireContext(), "You selected $selectedCategory", Toast.LENGTH_SHORT).show()
             }
 
@@ -109,7 +111,11 @@ class CampaignFragment : Fragment() {
 
             if (title.isEmpty() || desc.isEmpty()) {
                 // Show an error message
-                Toast.makeText(requireContext(), "Please fill in all required fields.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Please fill in all required fields.",
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
                 val builder: AlertDialog.Builder = AlertDialog.Builder(activity)
                 builder.setTitle("Confirmation")
@@ -123,28 +129,32 @@ class CampaignFragment : Fragment() {
                             dialog.dismiss()
                         })
                     .show()
+                CampaignFragment.categories = selectedCategory
+                CampaignFragment.userId= Firebase.auth.currentUser?.uid.toString()
+                CampaignFragment.endDate = textView7.text.toString()
+                CampaignFragment.title = titleText.text.toString()
+                CampaignFragment.desc = descText.text.toString()
+                CampaignFragment.requireAmount = binding.textAmount.text.toString().toInt()
+                context?.let { it1 -> CampaignFragment.saveDataToFirebase(it1)  }
 
-                val title = titleText.text.toString()
-                val desc = descText.text.toString()
-                val campaign = Campaign(title, desc)
+                        //CampaignFragment.title = binding.titleText.toString()
+                        //CampaignFragment.amount = binding.textAmount.toString().toInt()
 
-                CampaignFragment.title = binding.titleText.toString()
-                CampaignFragment.amount = binding.textAmount.toString().toInt()
-
-                mDatabase.push().setValue(campaign)
-                // Save titleText in database
-              //  val campaign = Campaign(title)
-               // mDatabase.child("campaigns").push().setValue(campaign)
-                val bundle = Bundle()
-                bundle.putString("title", title)
-                val eventFragment = EventFragment()
-                eventFragment.arguments = bundle
-                //supportFragmentManager.beginTransaction().replace(R.id.fragment_container, eventFragment).commit()
-                findNavController().navigate(R.id.action_nav_campaign_to_nav_event)
+                        //mDatabase.push().setValue(campaign)
+                        // Save titleText in database
+                        //  val campaign = Campaign(title)
+                        // mDatabase.child("campaigns").push().setValue(campaign)
+                        // val bundle = Bundle()
+                        //bundle.putString("title", title)
+                        //val eventFragment = EventFragment()
+                        //eventFragment.arguments = bundle
+                        //supportFragmentManager.beginTransaction().replace(R.id.fragment_container, eventFragment).commit()
+                        //findNavController().navigate(R.id.action_nav_campaign_to_nav_event)
 
 
+
+                //findNavController().navigate(R.id.action_nav_campaign_to_eventFragment)
             }
-            //findNavController().navigate(R.id.action_nav_campaign_to_eventFragment)
         })
 
 
@@ -178,7 +188,7 @@ class CampaignFragment : Fragment() {
          * @return A new instance of fragment CampaignFragment.
          */
 
-    data class Campaign(val title: String, val desc: String) {
-        constructor() : this("","")
+    data class Campaign(val desc: String, val requireAmount: Int, val userId: String) {
+        constructor() : this("",0,"")
     }
 }}

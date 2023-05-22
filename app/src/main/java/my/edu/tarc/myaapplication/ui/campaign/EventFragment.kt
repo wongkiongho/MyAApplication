@@ -18,6 +18,7 @@ class EventFragment : Fragment() {
     private val binding get() = _binding!!
     private val CampaignFragment: CampaignViewModel by activityViewModels()
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,6 +32,9 @@ class EventFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         //binding.dTitle2.setText(CampaignFragment.title.toString())
         //binding.dAmount.setText(CampaignFragment.amount.toString().toInt())
+
+
+
         binding.buttonDonate.setOnClickListener{
             findNavController().navigate(R.id.action_nav_event_to_nav_donation)
         }

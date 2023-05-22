@@ -41,24 +41,24 @@ class DetailsFragment : Fragment() {
         mButton = view.findViewById(R.id.button3)
         mButtonBack = view.findViewById(R.id.buttonBack)
 
-            val userId = currentUser?.uid.toString()
+        val userId = currentUser?.uid.toString()
 
 
-            mDatabase.child(userId).addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val user = dataSnapshot.getValue(User::class.java)
+        mDatabase.child(userId).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val user = dataSnapshot.getValue(User::class.java)
 
-                    user?.let {
-                        mEditName.setText(it.name)
-                        mEditPhone.setText(it.phone)
-                        mEditEmail.setText(it.email)
-                    }
+                user?.let {
+                    mEditName.setText(it.name)
+                    mEditPhone.setText(it.phone)
+                    mEditEmail.setText(it.email)
                 }
+            }
 
-                override fun onCancelled(databaseError: DatabaseError) {
-                    // Handle database error
-                }
-            })
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle database error
+            }
+        })
 
 
 
@@ -101,7 +101,6 @@ class DetailsFragment : Fragment() {
 
 
 }
-
 
 
 
